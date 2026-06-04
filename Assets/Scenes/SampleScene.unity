@@ -272,6 +272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45f418f85a38a7e489c5bf1158a0f7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Baseball
+  pitchType: 0
+  randomPitchOnStart: 1
   throwSpeed: 20
   spinAxis: {x: 1, y: 0, z: 0}
   spinSpeed: 0
@@ -363,7 +365,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1, z: 21}
+  m_LocalPosition: {x: 0.2, y: 1, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -465,6 +467,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Baseball_Ball
       objectReference: {fileID: 0}
+    - target: {fileID: 8308326459262462758, guid: 3027674a0646755449d782a51475b888, type: 3}
+      propertyPath: m_TagString
+      value: Ball
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -475,6 +481,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8308326459262462758, guid: 3027674a0646755449d782a51475b888, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1445149450}
+    - targetCorrespondingSourceObject: {fileID: 8308326459262462758, guid: 3027674a0646755449d782a51475b888, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1445149454}
   m_SourcePrefab: {fileID: 100100000, guid: 3027674a0646755449d782a51475b888, type: 3}
 --- !u!1 &410087039
 GameObject:
@@ -669,6 +678,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45f418f85a38a7e489c5bf1158a0f7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Baseball
+  pitchType: 0
+  randomPitchOnStart: 0
   throwSpeed: 20
   spinAxis: {x: 1, y: 0, z: 0}
   spinSpeed: 0
@@ -700,6 +711,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &1445149454
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445149445}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.03497678
+  m_Center: {x: 0.000014781952, y: 0.0012495369, z: 0.000052155927}
 --- !u!1 &1950332210
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,8 +838,8 @@ Transform:
   m_GameObject: {fileID: 1950332210}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 19}
-  m_LocalScale: {x: 1, y: 1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 1, z: 18.44}
+  m_LocalScale: {x: 0.4318, y: 0.55, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
