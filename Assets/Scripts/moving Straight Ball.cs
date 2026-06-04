@@ -28,6 +28,8 @@ public class Baseball : MonoBehaviour
     [Header("Magnus Effect")]
     public float magnusStrength = 0.05f;
 
+    
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -41,6 +43,7 @@ public class Baseball : MonoBehaviour
 
         rb.linearVelocity = transform.forward * throwSpeed;
         rb.angularVelocity = spinAxis.normalized * spinSpeed;
+
     }
 
     private void FixedUpdate()
@@ -72,7 +75,7 @@ public class Baseball : MonoBehaviour
                 // 중간 속도, 좌우 변화
                 throwSpeed = 23f;
                 spinAxis = -Vector3.up;
-                spinSpeed = 20f;
+                spinSpeed = 13f;
                 magnusStrength = 0.006f;
                 break;
 
@@ -80,7 +83,7 @@ public class Baseball : MonoBehaviour
                 // 느리고 아래로 크게 떨어짐
                 throwSpeed = 15f;
                 spinAxis = Vector3.right;
-                spinSpeed = 35f;
+                spinSpeed = 13f;
                 magnusStrength = 0.008f;
                 break;
 
@@ -102,4 +105,6 @@ public class Baseball : MonoBehaviour
 
         rb.AddForce(magnusForce, ForceMode.Force);
     }
+
+    
 }

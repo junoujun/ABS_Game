@@ -484,6 +484,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8308326459262462758, guid: 3027674a0646755449d782a51475b888, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1445149454}
+    - targetCorrespondingSourceObject: {fileID: 8308326459262462758, guid: 3027674a0646755449d782a51475b888, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1445149458}
   m_SourcePrefab: {fileID: 100100000, guid: 3027674a0646755449d782a51475b888, type: 3}
 --- !u!1 &410087039
 GameObject:
@@ -678,7 +681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45f418f85a38a7e489c5bf1158a0f7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Baseball
-  pitchType: 0
+  pitchType: 2
   randomPitchOnStart: 0
   throwSpeed: 20
   spinAxis: {x: 1, y: 0, z: 0}
@@ -708,9 +711,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!135 &1445149454
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -732,6 +735,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.03497678
   m_Center: {x: 0.000014781952, y: 0.0012495369, z: 0.000052155927}
+--- !u!114 &1445149458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445149445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c000b179736507a4cae7560df20dcc07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Check_Location
+  targetZ: 18.44
+  strikeZoneCollider: {fileID: 1950332211}
 --- !u!1 &1950332210
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,7 +763,7 @@ GameObject:
   - component: {fileID: 1950332211}
   m_Layer: 0
   m_Name: strike zone
-  m_TagString: Untagged
+  m_TagString: Zone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -766,7 +783,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
