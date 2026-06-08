@@ -2,16 +2,21 @@ using UnityEngine;
 
 public class Check_Location : MonoBehaviour
 {
-    [Header("target of Z")] // strike zone을 지나는 순간 공의 좌표를 구하기 위함
-    public float targetZ = 18.44f; // strike zone의 z좌표
+    [Header("target of Z")]
+    public float targetZ = 18.44f;
 
     [Header("Strike Zone")]
     public Collider strikeZoneCollider;
-    private float previousZ; // 특정 순간에 ball의 z좌표를 담아놓을 변수
-    private bool targetZLogged = false; // debug.log를 입력 했는지 확인하는 변수
+
+    [Header("Ball")]
+    public float ballRadius = 0.03497678f * 2;
+
+    private Vector3 previousPosition;
+    private bool targetZLogged = false;
+
     void Start()
     {
-        previousZ = transform.position.z;
+        previousPosition = transform.position;
     }
 
     void FixedUpdate()
@@ -19,27 +24,37 @@ public class Check_Location : MonoBehaviour
         CheckTargetZ();
     }
 
-    private void CheckTargetZ() // fixed update에 참조 됨
+    private void CheckTargetZ()
     {
-        float currentZ = transform.position.z; //현재 position의 z값을 구함
+        Vector3 currentPosition = transform.position;
 
-        if (targetZLogged == false) // Debug.log를 하지 않았다면
+        if (targetZLogged == false)
         {
-            bool crossedTargetZ = //이전 프레임에서 현재 프레임으로 올 때 원하는 지점을 지나쳤는가?
-                (previousZ <= targetZ && currentZ >= targetZ) || 
-                (previousZ >= targetZ && currentZ <= targetZ);
+            bool crossedTargetZ =
+                (previousPosition.z <= targetZ && currentPosition.z >= targetZ) ||
+                (previousPosition.z >= targetZ && currentPosition.z <= targetZ);
 
             if (crossedTargetZ)
             {
-                Vector3 ballPosition = transform.position;
+                float t = Mathf.InverseLerp(
+                    previousPosition.z,
+                    currentPosition.z,
+                    targetZ
+                );
 
-                Debug.Log($"현재 좌표: {ballPosition}");
+                Vector3 ballPositionAtTargetZ =
+                    Vector3.Lerp(previousPosition, currentPosition, t);
+
+                Debug.Log($"보간된 통과 좌표: {ballPositionAtTargetZ}");
+
                 targetZLogged = true;
 
-                CheckStrikeOrBall(ballPosition);
+                CheckStrikeOrBall(ballPositionAtTargetZ);
+                DestroyGameObject();
             }
         }
-        previousZ = currentZ; // 다음 실행에서 현재 z좌표를 이전지점 좌표로 사용하기 위함
+
+        previousPosition = currentPosition;
     }
 
     private void CheckStrikeOrBall(Vector3 ballPosition)
@@ -53,12 +68,12 @@ public class Check_Location : MonoBehaviour
         Bounds zoneBounds = strikeZoneCollider.bounds;
 
         bool isInsideX =
-            ballPosition.x >= zoneBounds.min.x &&
-            ballPosition.x <= zoneBounds.max.x;
+            ballPosition.x >= zoneBounds.min.x - ballRadius &&
+            ballPosition.x <= zoneBounds.max.x + ballRadius;
 
         bool isInsideY =
-            ballPosition.y >= zoneBounds.min.y &&
-            ballPosition.y <= zoneBounds.max.y;
+            ballPosition.y >= zoneBounds.min.y - ballRadius &&
+            ballPosition.y <= zoneBounds.max.y + ballRadius;
 
         if (isInsideX && isInsideY)
         {
@@ -70,4 +85,9 @@ public class Check_Location : MonoBehaviour
         }
     }
 
+    private void DestroyGameObject()
+    {
+        Destroy(gameObject);
+        Debug.Log("Game Object Destroyed");
+    }
 }

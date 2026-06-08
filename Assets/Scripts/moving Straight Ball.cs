@@ -28,6 +28,7 @@ public class Baseball : MonoBehaviour
     [Header("Magnus Effect")]
     public float magnusStrength = 0.05f;
 
+    private Vector3 newPosition = new Vector3();
     
 
     private void Start()
@@ -41,9 +42,16 @@ public class Baseball : MonoBehaviour
 
         ApplyPitchSetting();
 
+        //Debug.Log($"ThrowSpeed: {throwSpeed} \nSpinSpeed:  {spinSpeed} \nStart Location: {newPosition}");
+        Debug.Log(
+            $"ThrowSpeed: {throwSpeed:F2}\n" +
+            $"SpinSpeed: {spinSpeed:F2}\n" +
+            $"Start Location: {newPosition.ToString("F3")}\n" +
+            $"Transform Position: {transform.position.ToString("F3")}"
+        );
+
         rb.linearVelocity = transform.forward * throwSpeed;
         rb.angularVelocity = spinAxis.normalized * spinSpeed;
-
     }
 
     private void FixedUpdate()
@@ -61,11 +69,16 @@ public class Baseball : MonoBehaviour
 
     private void ApplyPitchSetting()
     {
+        newPosition = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.5f, 1.5f), 0);
+        rb.position = newPosition;
+        transform.position = newPosition;
+
         switch (pitchType)
         {
             case PitchType.Fastball:
                 // 빠르고 거의 직선
-                throwSpeed = 26f;
+                //throwSpeed = 26f;
+                throwSpeed = Random.Range(25f, 28f);
                 spinAxis = Vector3.right;
                 spinSpeed = 12f;
                 magnusStrength = 0.003f;
@@ -73,25 +86,31 @@ public class Baseball : MonoBehaviour
 
             case PitchType.Slider:
                 // 중간 속도, 좌우 변화
-                throwSpeed = 23f;
+                //throwSpeed = 23f;
+                throwSpeed = Random.Range(19f, 22f);
                 spinAxis = -Vector3.up;
-                spinSpeed = 13f;
+                //spinSpeed = 15f;
+                spinSpeed = Random.Range(10f, 15f);
                 magnusStrength = 0.006f;
                 break;
 
             case PitchType.Curve:
                 // 느리고 아래로 크게 떨어짐
-                throwSpeed = 15f;
+                //throwSpeed = 15f;
+                throwSpeed = Random.Range(13f, 16f);
                 spinAxis = Vector3.right;
-                spinSpeed = 13f;
-                magnusStrength = 0.008f;
+                //spinSpeed = 10f;
+                spinSpeed = Random.Range(10f, 13f);
+                magnusStrength = 0.010f;
                 break;
 
             case PitchType.ChangeUp:
                 // 느리고 변화 적음
-                throwSpeed = 18f;
+                //throwSpeed = 15f;
+                throwSpeed = Random.Range(14f, 16f);
                 spinAxis = Vector3.right;
-                spinSpeed = 8f;
+                //spinSpeed = 10f;
+                spinSpeed = Random.Range(9f, 11f);
                 magnusStrength = 0.002f;
                 break;
         }
