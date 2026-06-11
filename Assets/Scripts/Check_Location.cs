@@ -10,19 +10,28 @@ public class Check_Location : MonoBehaviour
     public Collider strikeZoneCollider;
 
     [Header("Ball")]
-    public float ballRadius = 0.03497678f * 2;
+    public float ballRadius;
 
     private Vector3 previousPosition;
     private bool targetZLogged = false;
 
     void Start()
     {
+        ballRadius = GetBallWorldRadius();
         previousPosition = transform.position;
     }
 
     void FixedUpdate()
     {
         CheckTargetZ();
+    }
+
+    private float GetBallWorldRadius()
+    {
+        Collider ballCollider = GetComponent<Collider>();
+        Bounds bounds = ballCollider.bounds;
+
+        return Mathf.Max(bounds.extents.x, bounds.extents.y, bounds.extents.z);
     }
 
     private void CheckTargetZ()
