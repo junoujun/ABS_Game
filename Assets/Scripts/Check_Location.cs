@@ -1,9 +1,10 @@
 using UnityEngine;
+using System.Collections;
 
 public class Check_Location : MonoBehaviour
 {
     [Header("target of Z")]
-    public float targetZ = 18.44f;
+    public float targetZ = 0f;
 
     [Header("Strike Zone")]
     public Collider strikeZoneCollider;
@@ -50,7 +51,8 @@ public class Check_Location : MonoBehaviour
                 targetZLogged = true;
 
                 CheckStrikeOrBall(ballPositionAtTargetZ);
-                DestroyGameObject();
+                //DestroyGameObject();
+                StartCoroutine(DestroyGameObject(1.0f));
             }
         }
 
@@ -85,8 +87,9 @@ public class Check_Location : MonoBehaviour
         }
     }
 
-    private void DestroyGameObject()
+    IEnumerator DestroyGameObject(float waitTime)
     {
+        yield return new WaitForSeconds(waitTime);
         Destroy(gameObject);
         Debug.Log("Game Object Destroyed");
     }
