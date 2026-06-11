@@ -241,6 +241,8 @@ public class Baseball : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
+        rb.isKinematic = false; // 정지를 위한 Kinemetic False
+
         // 시작하자마자 움직이지 않도록 정지
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
@@ -409,8 +411,9 @@ public class Baseball : MonoBehaviour
         isThrown = false;
         isPreparingThrow = false;
 
-        rb.isKinematic = true;
+        rb.isKinematic = false;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
     }
 }
