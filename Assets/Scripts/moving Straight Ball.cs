@@ -400,4 +400,17 @@ public class Baseball : MonoBehaviour
     {
         Debug.Log($"공이 충돌한 오브젝트: {collision.gameObject.name}");
     }
+
+    public void ResetBall()
+    {
+        if (rb == null)
+            rb = GetComponent<Rigidbody>();
+
+        isThrown = false;
+        isPreparingThrow = false;
+
+        rb.isKinematic = true;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
 }

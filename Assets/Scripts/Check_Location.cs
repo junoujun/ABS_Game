@@ -61,7 +61,7 @@ public class Check_Location : MonoBehaviour
 
                 CheckStrikeOrBall(ballPositionAtTargetZ);
                 //DestroyGameObject();
-                StartCoroutine(DestroyGameObject(1.0f));
+                //StartCoroutine(DestroyGameObject(1.0f));
             }
         }
 
@@ -96,10 +96,10 @@ public class Check_Location : MonoBehaviour
         }
     }
 
-    IEnumerator DestroyGameObject(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        Destroy(gameObject);
-        Debug.Log("Game Object Destroyed");
-    }
+    // IEnumerator DestroyGameObject(float waitTime)
+    // {
+    //     yield return new WaitForSeconds(waitTime);
+    //     Destroy(gameObject);
+    //     Debug.Log("Game Object Destroyed");
+    // }
 }

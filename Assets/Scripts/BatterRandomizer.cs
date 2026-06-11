@@ -22,10 +22,10 @@ public class BatterRandomizer : MonoBehaviour
     [SerializeField] private float zoneWidth = 0.4318f; // 17 inch
     [SerializeField] private float zoneDepth = 0.05f;
 
-    private void Start()
-    {
-        RandomizeBatter();
-    }
+    // private void Start()
+    // {
+    //     RandomizeBatter();
+    // }
 
     public void RandomizeBatter()
     {
