@@ -432,7 +432,7 @@ public class GamaManager : MonoBehaviour
         RectTransform marker = reviewMarkers[i];
 
         marker.gameObject.SetActive(true);
-        marker.sizeDelta = new Vector2(30f, 30f);
+        marker.sizeDelta = new Vector2(40f, 40f);
 
         Vector3 pos = record.arrivalPosition;
 
