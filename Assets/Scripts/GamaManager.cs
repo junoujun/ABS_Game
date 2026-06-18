@@ -139,6 +139,9 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.UI;
+
+
 
 
 public class PitchRecord
@@ -157,6 +160,10 @@ public class PitchRecord
 
 public class GamaManager : MonoBehaviour
 {
+
+    [Header("Review Color")]
+    [SerializeField] private Color correctColor = Color.green;
+    [SerializeField] private Color wrongColor = Color.red;
     [Header("Panels")]
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject judgmentPanel;
@@ -318,6 +325,9 @@ public class GamaManager : MonoBehaviour
             arrivalPosition = arrivalPosition
         };
 
+        pitchRecords.Add(record);
+        currentPitchRecordIndex = pitchRecords.Count - 1;
+
         Debug.Log($"GameManager가 받은 판정: {(isStrike ? "Strike" : "Ball")}");
     }
 
@@ -332,60 +342,136 @@ public class GamaManager : MonoBehaviour
     }
 
     private void Judge(bool userSaidStrike)
+{
+    judgmentPanel.SetActive(false);
+
+    totalCount++;
+
+    bool isCorrect = (userSaidStrike == currentPitchIsStrike);
+
+    if (isCorrect)
     {
-        judgmentPanel.SetActive(false);
-
-        totalCount++;
-
-        bool isCorrect = (userSaidStrike == currentPitchIsStrike); //가독성을 위한 괄호
-
-        if (isCorrect)
-        {
-            correctCount++;
-        }
-
-        // 현재 투구 기록에 사용자 판정 저장
-        if (currentPitchRecordIndex >= 0 && currentPitchRecordIndex < pitchRecords.Count)
-        {
-            PitchRecord currentRecord = pitchRecords[currentPitchRecordIndex];
-
-            currentRecord.userSaidStrike = userSaidStrike;
-            currentRecord.hasUserJudgment = true;
-            currentRecord.isCorrect = isCorrect;
-        }
-
-        if (currentPitchIsStrike)
-        {
-            strikeCount++;
-        }
-        else
-        {
-            ballCount++;
-        }
-
-        if (strikeCount >= 3 || ballCount >= 4)
-        {
-            ShowResult();
-        }
-        else
-        {
-            StartCoroutine(PitchRoutine());
-        }
+        correctCount++;
     }
 
+    if (currentPitchRecordIndex >= 0 && currentPitchRecordIndex < pitchRecords.Count)
+    {
+        PitchRecord currentRecord = pitchRecords[currentPitchRecordIndex];
+
+        currentRecord.userSaidStrike = userSaidStrike;
+        currentRecord.hasUserJudgment = true;
+        currentRecord.isCorrect = isCorrect;
+    }
+
+    // 플레이어 선택 기준으로 카운트 증가
+    if (userSaidStrike)
+    {
+        strikeCount++;
+    }
+    else
+    {
+        ballCount++;
+    }
+
+    // 플레이어가 Strike 3개 또는 Ball 4개를 누르면 종료
+    if (strikeCount >= 3 || ballCount >= 4)
+    {
+        ShowResult();
+    }
+    else
+    {
+        StartCoroutine(PitchRoutine());
+    }
+}
+
+    [Header("Review Markers")]
+    [SerializeField] private RectTransform[] reviewMarkers;
+    
     private void ShowResult()
     {
-        pitchReviewPanel.SetActive(true);
-        resultPanel.SetActive(true);
+    pitchReviewPanel.SetActive(true);
+    resultPanel.SetActive(true);
 
-        float accuracy = totalCount == 0
-            ? 0f
-            : (float)correctCount / totalCount * 100f;
+    ShowPitchReview();
 
-        resultText.text = strikeCount >= 3 ? "Strike Out!" : "Walk!";
-        accuracyText.text = $"Call Accuracy: {accuracy:F1}%";
+    float accuracy = totalCount == 0
+        ? 0f
+        : (float)correctCount / totalCount * 100f;
+
+    resultText.text = strikeCount >= 3 ? "Strike Out!" : "Walk!";
+    accuracyText.text = $"Call Accuracy: {accuracy:F1}%";
+}   
+  private void ShowPitchReview()
+{
+    Debug.Log($"저장된 투구 수 : {pitchRecords.Count}");
+
+    for (int i = 0; i < reviewMarkers.Length; i++)
+    {
+        reviewMarkers[i].gameObject.SetActive(false);
     }
 
+    Bounds zoneBounds = strikeZone.ZoneCollider.bounds;
+
+    float actualZoneWidth = zoneBounds.size.x;
+    float actualZoneHeight = zoneBounds.size.y;
+
+    float reviewZoneWidth = 150f;
+    float reviewZoneHeight = reviewZoneWidth * (actualZoneHeight / actualZoneWidth);
+
+    reviewStrikeZone.sizeDelta = new Vector2(reviewZoneWidth, reviewZoneHeight);
+
+    for (int i = 0; i < pitchRecords.Count && i < reviewMarkers.Length; i++)
+    {
+        PitchRecord record = pitchRecords[i];
+        RectTransform marker = reviewMarkers[i];
+
+        marker.gameObject.SetActive(true);
+        marker.sizeDelta = new Vector2(24f, 24f);
+
+        Vector3 pos = record.arrivalPosition;
+
+        float normalizedX = (pos.x - zoneBounds.center.x) / actualZoneWidth;
+        float normalizedY = (pos.y - zoneBounds.center.y) / actualZoneHeight;
+
+        float markerX = normalizedX * reviewZoneWidth;
+        float markerY = normalizedY * reviewZoneHeight;
+
+        marker.anchoredPosition = new Vector2(markerX, markerY);
+
+        Image[] images = marker.GetComponentsInChildren<Image>();
+
+        foreach (Image img in images)
+        {
+            if (img.gameObject.name.Contains("Ball"))
+            {
+                img.color = record.isCorrect ? correctColor : wrongColor;
+
+                RectTransform imgRect = img.GetComponent<RectTransform>();
+                imgRect.anchoredPosition = Vector2.zero;
+                imgRect.sizeDelta = marker.sizeDelta;
+            }
+        }
+
+        TMP_Text numberText = marker.GetComponentInChildren<TMP_Text>();
+
+        if (numberText != null)
+        {
+            numberText.text = (i + 1).ToString();
+            numberText.alignment = TextAlignmentOptions.Center;
+            numberText.color = Color.white;
+            numberText.fontSize = 14;
+
+            RectTransform textRect = numberText.GetComponent<RectTransform>();
+            textRect.anchoredPosition = Vector2.zero;
+            textRect.sizeDelta = marker.sizeDelta;
+        }
+
+        Debug.Log($"Marker {i + 1} 실제좌표: {pos}, UI좌표: ({markerX}, {markerY}), 정답여부: {record.isCorrect}");
+    }
+}
+
+[Header("Review")]
+[SerializeField] private RectTransform reviewStrikeZone;
     public void RestartGame()
     {
         StartGame();

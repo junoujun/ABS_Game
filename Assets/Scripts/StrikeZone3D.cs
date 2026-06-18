@@ -261,4 +261,7 @@ public class StrikeZone3D : MonoBehaviour
         if (visual != null)
             visual.gameObject.SetActive(false);
     }
+
+    public float ZoneWidth => size.x;
+    public float ZoneHeight => size.y;
 }
