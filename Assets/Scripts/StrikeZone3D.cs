@@ -85,6 +85,7 @@ public class StrikeZone3D : MonoBehaviour
         // Ball 태그를 가진 오브젝트만 판정
         if (other.CompareTag("Ball"))
         {
+            WasLastPitchStrike = true;
             Debug.Log("공이 스트라이크 존을 통과함");
         }
     }
@@ -116,5 +117,24 @@ public class StrikeZone3D : MonoBehaviour
 
         visual.localPosition = Vector3.zero;
         visual.localScale = size;
+    }
+
+    public bool WasLastPitchStrike { get; private set; }
+
+    public void ResetPitchResult()
+    {
+        WasLastPitchStrike = false;
+    }
+
+    public void ShowZone()
+    {
+        if (visual != null)
+            visual.gameObject.SetActive(true);
+    }
+
+    public void HideZone()
+    {
+        if (visual != null)
+            visual.gameObject.SetActive(false);
     }
 }

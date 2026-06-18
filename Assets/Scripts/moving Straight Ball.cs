@@ -241,6 +241,8 @@ public class Baseball : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
+        rb.isKinematic = false; // 정지를 위한 Kinemetic False
+
         // 시작하자마자 움직이지 않도록 정지
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
@@ -399,5 +401,19 @@ public class Baseball : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log($"공이 충돌한 오브젝트: {collision.gameObject.name}");
+    }
+
+    public void ResetBall()
+    {
+        if (rb == null)
+            rb = GetComponent<Rigidbody>();
+
+        isThrown = false;
+        isPreparingThrow = false;
+
+        rb.isKinematic = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
     }
 }
