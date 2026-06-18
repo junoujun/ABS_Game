@@ -313,7 +313,7 @@ public class Baseball : MonoBehaviour
             case PitchType.Fastball:
                 targetPosition = new Vector3(
                     Random.Range(-0.5f, 0.5f),
-                    Random.Range(0.3f, 1f),
+                    Random.Range(0.5f, 1f),
                     0f
                 );
                 break;
@@ -321,7 +321,7 @@ public class Baseball : MonoBehaviour
             case PitchType.Curve:
                 targetPosition = new Vector3(
                     Random.Range(-0.5f, 0.5f),
-                    Random.Range(0.3f, 1f),
+                    Random.Range(0.5f, 1f),
                     0f
                 );
                 break;
@@ -329,7 +329,7 @@ public class Baseball : MonoBehaviour
             case PitchType.Slider:
                 targetPosition = new Vector3(
                     Random.Range(-1.4f, -1.1f),
-                    Random.Range(0.3f, 1f),
+                    Random.Range(0.5f, 1f),
                     0f
                 );
                 break;
