@@ -161,6 +161,9 @@ public class PitchRecord
 public class GamaManager : MonoBehaviour
 {
 
+    [Header("Count UI")]
+    [SerializeField] private GameObject[] ballCountDots;
+    [SerializeField] private GameObject[] strikeCountDots;
     [Header("Review Color")]
     [SerializeField] private Color correctColor = Color.green;
     [SerializeField] private Color wrongColor = Color.red;
@@ -218,6 +221,8 @@ public class GamaManager : MonoBehaviour
         ballCount = 0;
         totalCount = 0;
         correctCount = 0;
+
+        UpdateCountUI();
 
         pitchRecords.Clear();
         currentPitchRecordIndex = -1;
@@ -373,6 +378,7 @@ public class GamaManager : MonoBehaviour
         ballCount++;
     }
 
+    UpdateCountUI();
     // 플레이어가 Strike 3개 또는 Ball 4개를 누르면 종료
     if (strikeCount >= 3 || ballCount >= 4)
     {
@@ -426,7 +432,7 @@ public class GamaManager : MonoBehaviour
         RectTransform marker = reviewMarkers[i];
 
         marker.gameObject.SetActive(true);
-        marker.sizeDelta = new Vector2(24f, 24f);
+        marker.sizeDelta = new Vector2(30f, 30f);
 
         Vector3 pos = record.arrivalPosition;
 
@@ -467,6 +473,20 @@ public class GamaManager : MonoBehaviour
         }
 
         Debug.Log($"Marker {i + 1} 실제좌표: {pos}, UI좌표: ({markerX}, {markerY}), 정답여부: {record.isCorrect}");
+    }
+
+    
+}
+private void UpdateCountUI()
+{
+    for (int i = 0; i < ballCountDots.Length; i++)
+    {
+        ballCountDots[i].SetActive(i < ballCount);
+    }
+
+    for (int i = 0; i < strikeCountDots.Length; i++)
+    {
+        strikeCountDots[i].SetActive(i < strikeCount);
     }
 }
 
